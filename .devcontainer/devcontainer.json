@@ -1,36 +1,22 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
-	"name": "Docker Images - Android SDK",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	// "image": "mcr.microsoft.com/devcontainers/base:alpine-3.20",
+	"name": "Docker Images - Android SDK", // 개발 컨테이너 이름.
 	"build": {
-		"dockerfile": "Dockerfile"
+		"dockerfile": "Dockerfile" // Docker 이미지를 빌드하는 데 사용될 Dockerfile의 경로 지정.
 	},
 	"mounts": [
-	  "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+		// 컨테이너 내부에서 Docker 명령어를 실행하기 위해 호스트 머신의 Docker 소켓을 컨테이너에 마운트.
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
 	],
-	"features": {},
 	"customizations": {
 		"vscode": {
+			// 개발 컨테이너가 시작될 때 자동으로 설치될 VSCode 확장 프로그램 목록.
 			"extensions": [
 				"ms-azuretools.vscode-docker"
 			]
 		}
-	}
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a"
-
-	// Configure tool-specific properties.
-	// "customizations": {},
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+	},
+	// "postAttachCommand": 컨테이너에 연결된 후 실행될 명령어.
+    // 여기서는 /var/run/docker.sock 파일의 그룹을 'docker'로 변경하고(기존에는 'root') 그룹에 RW 권한을 부여하며,
+    // 이를 통해 'vscode' 사용자가 Docker 명령어를 실행할 수 있도록 설정.
+	"postAttachCommand": "sudo chown :docker /var/run/docker.sock && sudo chmod g+rw /var/run/docker.sock"
 }
