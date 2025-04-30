@@ -30,6 +30,7 @@ RUN set -o xtrace \
     && apt install -y -qq xxd \
     && apt install -y lftp \
     && apt install -qq -y sqlite3 libsqlite3-dev \
+    && apt install -y libgtk-3-dev \
     && rm -rf /var/lib/apt/lists/* \
     && sh -c 'echo "en_US.UTF-8 UTF-8" > /etc/locale.gen' \
     && locale-gen \
