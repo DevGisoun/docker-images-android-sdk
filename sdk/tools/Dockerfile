@@ -24,14 +24,13 @@ RUN set -o xtrace \
     && apt install -y cmake \
     && apt install -y ninja-build \
     && apt install -y pkg-config \
-    && apt install -y sudo wget zip unzip git openssh-client curl bc software-properties-common build-essential ruby-full ruby-bundler libstdc++6 libpulse0 libglu1-mesa locales lcov libsqlite3-dev --no-install-recommends \
+    && apt install -y sudo wget zip unzip git openssh-client curl bc software-properties-common build-essential ruby-full ruby-bundler libstdc++6 libpulse0 libglu1-mesa locales lcov libsqlite3-dev gnupg apt-transport-https ca-certificates --no-install-recommends \
     # for x86 emulators
     && apt install -y libxtst6 libnss3-dev libnspr4 libxss1 libasound2t64 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 \
     && apt install -y -qq xxd \
     && apt install -y lftp \
     && apt install -qq -y sqlite3 libsqlite3-dev \
     && apt install -y libgtk-3-dev \
-    && rm -rf /var/lib/apt/lists/* \
     && sh -c 'echo "en_US.UTF-8 UTF-8" > /etc/locale.gen' \
     && locale-gen \
     && update-locale LANG=en_US.UTF-8 \
@@ -48,7 +47,21 @@ RUN set -o xtrace \
     && touch /root/.android/repositories.cfg \
     && sdkmanager platform-tools \
     && mkdir -p /root/.android \
-    && touch /root/.android/repositories.cfg
+    && touch /root/.android/repositories.cfg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Google Chrome 저장소 키 추가
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /etc/apt/keyrings/google-chrome.gpg
+
+# Google Chrome 저장소 추가
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+
+# 패키지 업데이트 후 Chrome 설치 여부 확인 및 설치
+RUN apt update
+RUN dpkg -s google-chrome-stable > /dev/null 2>&1 || (apt install -y google-chrome-stable)
+
+# 불필요한 패키지 목록 제거
+RUN rm -rf /var/lib/apt/lists/*
 
 # emulator is not available on linux/arm64 (https://issuetracker.google.com/issues/227219818)
 RUN if [ $(uname -m) == "x86_64" ]; then sdkmanager emulator ; fi
