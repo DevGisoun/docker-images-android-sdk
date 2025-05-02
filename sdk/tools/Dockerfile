@@ -13,13 +13,13 @@ ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
     PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/emulator
 
 # https://developer.android.com/studio/#command-line-tools-only
-ENV ANDROID_SDK_TOOLS_VERSION=11076708
+ENV ANDROID_SDK_TOOLS_VERSION=13114758
 
 RUN set -o xtrace \
     && cd /opt \
     && apt update \
-    && apt install -y jq openjdk-21-jdk clang cmake ninja-build pkg-config libgtk-3-dev \
-    && apt install -y sudo wget zip unzip git openssh-client curl bc software-properties-common build-essential ruby-full ruby-bundler libstdc++6 libstdc++6:i386 libpulse0 libglu1-mesa locales lcov libsqlite3-dev gnupg apt-transport-https ca-certificates xz-utils libc6 libc6:i386 lib32z1 libbz2-1.0 libbz2-1.0:i386 libncurses5:i386 --no-install-recommends \
+    && apt install -y jq openjdk-17-jdk clang cmake ninja-build pkg-config libgtk-3-dev \
+    && apt install -y sudo wget zip unzip git openssh-client curl bc software-properties-common build-essential ruby-full ruby-bundler libstdc++6 libpulse0 libglu1-mesa locales lcov libsqlite3-dev gnupg apt-transport-https ca-certificates xz-utils libc6 lib32z1 libbz2-1.0 --no-install-recommends \
     # for x86 emulators
     && apt install -y libxtst6 libnss3-dev libnspr4 libxss1 libasound2t64 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 \
     && apt install -y -qq xxd sqlite3 libsqlite3-dev \
