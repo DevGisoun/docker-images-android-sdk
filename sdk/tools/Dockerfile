@@ -18,19 +18,12 @@ ENV ANDROID_SDK_TOOLS_VERSION=11076708
 RUN set -o xtrace \
     && cd /opt \
     && apt update \
-    && apt install -y jq \
-    && apt install -y openjdk-21-jdk \
-    && apt install -y clang \
-    && apt install -y cmake \
-    && apt install -y ninja-build \
-    && apt install -y pkg-config \
-    && apt install -y sudo wget zip unzip git openssh-client curl bc software-properties-common build-essential ruby-full ruby-bundler libstdc++6 libpulse0 libglu1-mesa locales lcov libsqlite3-dev gnupg apt-transport-https ca-certificates --no-install-recommends \
+    && apt install -y jq openjdk-21-jdk clang cmake ninja-build pkg-config libgtk-3-dev \
+    && apt install -y sudo wget zip unzip git openssh-client curl bc software-properties-common build-essential ruby-full ruby-bundler libstdc++6 libstdc++6:i386 libpulse0 libglu1-mesa locales lcov libsqlite3-dev gnupg apt-transport-https ca-certificates xz-utils libc6 libc6:i386 lib32z1 libbz2-1.0 libbz2-1.0:i386 libncurses5:i386 --no-install-recommends \
     # for x86 emulators
     && apt install -y libxtst6 libnss3-dev libnspr4 libxss1 libasound2t64 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 \
-    && apt install -y -qq xxd \
+    && apt install -y -qq xxd sqlite3 libsqlite3-dev \
     && apt install -y lftp \
-    && apt install -qq -y sqlite3 libsqlite3-dev \
-    && apt install -y libgtk-3-dev \
     && sh -c 'echo "en_US.UTF-8 UTF-8" > /etc/locale.gen' \
     && locale-gen \
     && update-locale LANG=en_US.UTF-8 \
@@ -50,10 +43,10 @@ RUN set -o xtrace \
     && touch /root/.android/repositories.cfg \
     && rm -rf /var/lib/apt/lists/*
 
-# Google Chrome 저장소 키 추가
+# Chrome 저장소 키 추가
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /etc/apt/keyrings/google-chrome.gpg
 
-# Google Chrome 저장소 추가
+# Chrome 저장소 추가
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
 # 패키지 업데이트 후 Chrome 설치 여부 확인 및 설치
