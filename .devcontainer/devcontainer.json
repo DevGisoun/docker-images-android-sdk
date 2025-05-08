@@ -11,7 +11,7 @@
 		"vscode": {
 			// 개발 컨테이너가 시작될 때 자동으로 설치될 VSCode 확장 프로그램 목록.
 			"extensions": [
-				"ms-azuretools.vscode-docker"
+				"ms-azuretools.vscode-containers"
 			]
 		}
 	},
